@@ -1,0 +1,39 @@
+# Entornos virtuales
+env/
+venv/
+.venv/
+
+# Archivos de entorno sensibles
+.env
+.env.*
+
+# Archivos Python compilados
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos de base de datos temporales
+*.db
+*.sqlite3
+
+# Salidas temporales de exportación
+/exported_zips/
+*.zip
+
+# Archivos de logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Alembic
+alembic/versions/*.pyc
+alembic/__pycache__/
+
+# Archivos de cache
+*.cache
+*.egg-info/
+dist/
+build/

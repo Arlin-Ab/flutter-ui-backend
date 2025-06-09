@@ -1,0 +1,32 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: StatefulBuilder(
+      builder: (context, setState) {
+        return Row(
+          children: [
+            Switch(
+              value: isSwitched_{{ component.id.replace('-', '_') }},
+              onChanged: (bool newValue) {
+                setState(() => isSwitched_{{ component.id.replace('-', '_') }} = newValue);
+              },
+              activeColor: Color(0xFF{{ styles.color[1:] }}),
+            ),
+            {% if component.text %}
+            Text(
+              {{ component.text | tojson }},
+              style: TextStyle(
+                fontSize: {{ styles.fontSize or 14 }},
+                color: Color(0xFF{{ styles.color[1:] }}),
+              ),
+            ),
+            {% endif %}
+          ],
+        );
+      },
+    ),
+  ),
+)

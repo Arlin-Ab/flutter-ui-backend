@@ -1,0 +1,15 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(0) }}),
+      child: Image.network(
+        '{{ component.src or "https://via.placeholder.com/300" }}',
+        fit: BoxFit.{{ component.fit or "cover" }},
+      ),
+    ),
+  ),
+)

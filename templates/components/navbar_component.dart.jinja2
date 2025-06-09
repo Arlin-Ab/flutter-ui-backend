@@ -1,0 +1,26 @@
+ClipRRect(
+  borderRadius: BorderRadius.circular({{ styles.borderRadius | replace("px", "") | float | default(12) }}),
+  child: BottomNavigationBar(
+    currentIndex: 0,
+    selectedItemColor: Color(0xFF{{ styles.color[1:] }}),
+    unselectedItemColor: Colors.grey,
+    backgroundColor: Color(0xFF{{ styles.backgroundColor[1:] }}),
+    onTap: (index) {
+      switch (index) {
+        {% for item in component["items"] %}
+        case {{ loop.index0 }}:
+          Navigator.push(context, MaterialPageRoute(builder: (_) => {{ item.target.replace(" ", "") }}()));
+          break;
+        {% endfor %}
+      }
+    },
+    items: [
+      {% for item in component["items"] %}
+      BottomNavigationBarItem(
+        icon: Icon(Icons.{{ item.icon }}),
+        label: '{{ item.label }}',
+      ),
+      {% endfor %}
+    ],
+  ),
+)

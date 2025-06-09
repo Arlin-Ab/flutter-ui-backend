@@ -1,0 +1,26 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xFF{{ styles.backgroundColor[1:] }}),
+        shadowColor: Colors.black.withOpacity(0.2),
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(12) }}),
+        ),
+      ),
+      onPressed: () {},
+      child: Text(
+        {{ component.label | tojson or '"Botón"' }},
+        style: TextStyle(
+          fontSize: {{ styles.fontSize or 14 }},
+          color: Color(0xFF{{ styles.color[1:] }}),
+        ),
+      ),
+    ),
+  ),
+)

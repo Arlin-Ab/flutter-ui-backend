@@ -1,0 +1,42 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "defaultProject": "crud-app",
+    "projects": {
+      "crud-app": {
+        "projectType": "application",
+        "root": "",
+        "sourceRoot": "src",
+        "architect": {
+          "build": {
+            "builder": "@angular-devkit/build-angular:browser",
+            "options": {
+              "outputPath": "dist/crud-app",
+              "index": "src/index.html",
+              "main": "src/main.ts",
+              "polyfills": [],
+              "tsConfig": "tsconfig.app.json",
+              "assets": [],
+              "styles": ["src/styles.css"],
+              "scripts": []
+            },
+            "configurations": {
+              "production": {
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "extractCss": true
+              }
+            }
+          },
+          "serve": {
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "options": {
+              "browserTarget": "crud-app:build"
+            }
+          }
+        }
+      }
+    }
+  }
+  

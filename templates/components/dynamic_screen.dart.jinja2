@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+
+class {{ screen_name }} extends StatefulWidget {
+  const {{ screen_name }}({super.key});
+
+  @override
+  State<{{ screen_name }}> createState() => _{{ screen_name }}State();
+}
+
+class _{{ screen_name }}State extends State<{{ screen_name }}> {
+
+  {% for c in components %}
+    {% if c.component.type == "checkbox" %}
+  bool isChecked_{{ c.component.id.replace('-', '_') }} = {{ c.component.value | default(false) | lower }};
+    {% elif c.component.type == "switch" %}
+  bool isSwitched_{{ c.component.id.replace('-', '_') }} = {{ c.component.value | default(false) | lower }};
+    {% elif c.component.type == "radio" %}
+  String selected_{{ c.component.id.replace('-', '_') }} = '{{ c.component.selectedValue or (c.component.options[0].value if c.component.options|length > 0 else "") }}';
+    {% endif %}
+  {% endfor %}
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      {% set has_appbar = components | selectattr("component.type", "equalto", "appbar") | list | length > 0 %}
+      {% if has_appbar %}
+      appBar: AppBar(
+        title: const Text('{{ screen_title }}'),
+      ),
+      {% endif %}
+      body: SafeArea(
+        child: Stack(
+          children: [
+            {% for c in components if c.component.type not in ['navbar', 'appbar'] %}
+              {{ c.rendered }},
+            {% endfor %}
+          ],
+        ),
+      ),
+      {% set navbars = components | selectattr("component.type", "equalto", "navbar") | list %}
+      {% if navbars %}
+      bottomNavigationBar: {{ navbars[0].rendered }},
+      {% endif %}
+    );
+  }
+}

@@ -1,0 +1,13 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: Icon(
+      Icons.{{ component.iconName or "star" }},
+      size: {{ component.iconSize or 24 }},
+      color: Color(0xFF{{ component.iconColor[1:] or '000000' }}),
+    ),
+  ),
+)

@@ -1,0 +1,35 @@
+{% if not is_child %}
+Positioned(
+  top: screenHeight * {{ component.styles.top | default(0) }},
+  left: screenWidth * {{ component.styles.left | default(0) }},
+  child:
+{% endif %}
+Container(
+  width: screenWidth * {{ component.styles.width | default(1) }},
+  height: screenHeight * {{ component.styles.height | default(1) }},
+  decoration: BoxDecoration(
+    color: {{ "Colors.transparent" if component.styles.backgroundColor == "transparent" else "Color(0xFF" + component.styles.backgroundColor[1:] + ")" }},
+    borderRadius: BorderRadius.circular({{ component.styles.borderRadius | replace("px", "") | float | default(12) }}),
+  ),
+  child: GridView.count(
+    crossAxisCount: {{ component.columns | default(2) }},
+    crossAxisSpacing: {{ component.gap | default(8) }},
+    mainAxisSpacing: {{ component.gap | default(8) }},
+    padding: EdgeInsets.zero,
+    children: [
+      {% for child in component.childrenComponents %}
+      Container(
+        padding: EdgeInsets.all({{ component.styles.cellPadding | default(16) }}),
+        decoration: BoxDecoration(
+          color: Color(0xFF{{ component.styles.cellBgColor[1:] | default("e5e7eb") }}),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: {{ render_component(child, screen_width, screen_height) }},
+      ),
+      {% endfor %}
+    ],
+  ),
+)
+{% if not is_child %}
+)
+{% endif %}

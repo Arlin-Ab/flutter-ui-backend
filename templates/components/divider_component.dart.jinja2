@@ -1,0 +1,12 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ thickness or 1 }},
+    child: Divider(
+      color: Color(0xFF{{ color[1:] }}),
+      thickness: {{ thickness or 1 }},
+    ),
+  ),
+)

@@ -1,0 +1,24 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: Container(
+      color: {{ 'Colors.transparent' if styles.backgroundColor == 'transparent' else 'Color(0xFF' + styles.backgroundColor[1:] + ')' }},
+      alignment: {{ "Alignment.center" if component.centerText else "Alignment.centerLeft" }},
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Text(
+        {{ component.label | tojson or component.text | tojson or '"Label"' }},
+        textAlign: {{ 'TextAlign.center' if component.centerText else 'TextAlign.left' }},
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        softWrap: false,
+        style: TextStyle(
+          fontSize: ({{ styles.fontSize or 14 }} / {{ screen_height }}) * screenHeight,
+          color: Color(0xFF{{ styles.color[1:] if styles.color else '000000' }}),
+        ),
+      ),
+    ),
+  ),
+)

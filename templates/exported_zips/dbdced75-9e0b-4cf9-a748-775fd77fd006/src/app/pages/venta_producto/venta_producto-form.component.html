@@ -1,0 +1,31 @@
+<h2 class="text-xl font-bold mb-4">{{ isEdit ? "Editar" : "Crear" }} Venta_Producto</h2>
+<form (ngSubmit)="save()" class="space-y-4">
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+      <input [(ngModel)]="item['Cantidad']"
+             name="Cantidad"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Precio_unitario</label>
+      <input [(ngModel)]="item['Precio_unitario']"
+             name="Precio_unitario"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Sub_Total</label>
+      <input [(ngModel)]="item['Sub_Total']"
+             name="Sub_Total"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+    Guardar
+  </button>
+</form>

@@ -1,0 +1,30 @@
+<div class="space-y-6">
+  <h2 class="text-xl font-bold">Listado de Class2</h2>
+
+  <a routerLink="/class2/new"
+     class="inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
+    ➕ Nuevo Class2
+  </a>
+
+  <div class="overflow-x-auto border rounded-lg shadow">
+    <table class="min-w-full divide-y divide-gray-200 bg-white">
+      <thead class="bg-gray-50">
+        <tr>
+          
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let item of items">
+          
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+            <a [routerLink]="['/class2', item['id']]"
+               class="text-blue-600 hover:text-blue-900 mr-3">Editar</a>
+            <button (click)="delete(item['id'])"
+                    class="text-red-600 hover:text-red-900">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<h2 class="text-xl font-bold mb-4">{{ isEdit ? "Editar" : "Crear" }} Empleado</h2>
+<form (ngSubmit)="save()" class="space-y-4">
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Empleo</label>
+      <input [(ngModel)]="item['Empleo']"
+             name="Empleo"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+      <input [(ngModel)]="item['Nombre']"
+             name="Nombre"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Salario</label>
+      <input [(ngModel)]="item['Salario']"
+             name="Salario"
+             class="w-full border border-gray-300 rounded px-3 py-2"
+             required />
+    </div>
+  
+  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+    Guardar
+  </button>
+</form>

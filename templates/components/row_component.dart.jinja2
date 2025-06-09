@@ -1,0 +1,22 @@
+Positioned(
+  top: screenHeight * {{ component.styles.top | default(0) }},
+  left: screenWidth * {{ component.styles.left | default(0) }},
+  child: Container(
+    width: screenWidth * {{ component.styles.width | default(1) }},
+    height: screenHeight * {{ component.styles.height | default(1) }},
+    decoration: BoxDecoration(
+      color: {{ "Colors.transparent" if component.styles.backgroundColor == "transparent" else "Color(0xFF" + component.styles.backgroundColor[1:] + ")" }},
+      borderRadius: BorderRadius.circular({{ component.styles.borderRadius | replace("px", "") | float | default(12) }}),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.{{ component.mainAxisAlignment | default("start") }},
+      crossAxisAlignment: CrossAxisAlignment.{{ component.crossAxisAlignment | default("center") }},
+      children: [
+        {% for child in component.childrenComponents %}
+          {{ render_component(child, screen_width, screen_height) }},
+          {% if not loop.last %}SizedBox(width: {{ component.gap | default(8) }}),{% endif %}
+        {% endfor %}
+      ],
+    ),
+  ),
+)

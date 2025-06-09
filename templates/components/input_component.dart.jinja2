@@ -1,0 +1,35 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: TextField(
+      obscureText: {{ component.obscured | default(false) | string | lower }},
+      decoration: InputDecoration(
+        hintText: {{ component.placeholder | tojson or '"Escribe aquí"' }},
+        filled: true,
+        fillColor: Color(0xFF{{ styles.cellBgColor[1:] }}),
+        contentPadding: EdgeInsets.all({{ styles.cellPadding or 12 }}),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(12) }}),
+          borderSide: BorderSide(
+            color: Color(0xFF{{ styles.borderColor[1:] if styles.borderColor else 'cccccc' }}),
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(12) }}),
+          borderSide: BorderSide(
+            color: Color(0xFF{{ styles.borderColor[1:] if styles.borderColor else 'cccccc' }}),
+            width: 1.5,
+          ),
+        ),
+      ),
+      style: TextStyle(
+        fontSize: {{ styles.contentFontSize or 14 }},
+        color: Color(0xFF{{ styles.contentColor[1:] }}),
+      ),
+    ),
+  ),
+)

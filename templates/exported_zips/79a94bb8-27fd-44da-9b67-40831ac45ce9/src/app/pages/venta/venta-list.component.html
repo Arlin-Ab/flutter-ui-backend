@@ -1,0 +1,46 @@
+<div class="space-y-6">
+  <h2 class="text-xl font-bold">Listado de Venta</h2>
+
+  <a routerLink="/venta/new"
+     class="inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
+    ➕ Nuevo Venta
+  </a>
+
+  <div class="overflow-x-auto border rounded-lg shadow">
+    <table class="min-w-full divide-y divide-gray-200 bg-white">
+      <thead class="bg-gray-50">
+        <tr>
+          
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Precio
+          </th>
+          
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Total
+          </th>
+          
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let item of items">
+          
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+            {{ item["Precio"] }}
+          </td>
+          
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+            {{ item["Total"] }}
+          </td>
+          
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+            <a [routerLink]="['/venta', item['id']]"
+               class="text-blue-600 hover:text-blue-900 mr-3">Editar</a>
+            <button (click)="delete(item['id'])"
+                    class="text-red-600 hover:text-red-900">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

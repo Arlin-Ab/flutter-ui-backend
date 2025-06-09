@@ -1,0 +1,36 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: DropdownButtonFormField<String>(
+      value: null,
+      items: [
+        {% for opt in options or [] %}
+        DropdownMenuItem(
+          value: '{{ opt.value }}',
+          child: Text('{{ opt.label }}'),
+        ),
+        {% endfor %}
+      ],
+      onChanged: (value) {},
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Color(0xFF{{ styles.backgroundColor[1:] if styles.backgroundColor else 'ffffff' }}),
+        border: OutlineInputBorder(
+           borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(12) }}),
+           borderSide: BorderSide(
+           color: Color(0xFF{{ (styles.borderColor or styles.backgroundColor or '#cccccc')[1:] }}),
+           width: 1.0,
+            ),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      ),
+      style: TextStyle(
+        fontSize: {{ styles.fontSize or 14 }},
+        color: Color(0xFF{{ styles.color[1:] if styles.color else '000000' }}),
+      ),
+    ),
+  ),
+)

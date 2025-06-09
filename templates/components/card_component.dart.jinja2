@@ -1,0 +1,35 @@
+Positioned(
+  top: {{ styles.top }} * screenHeight,
+  left: {{ styles.left }} * screenWidth,
+  child: SizedBox(
+    width: {{ styles.width }} * screenWidth,
+    height: {{ styles.height }} * screenHeight,
+    child: Card(
+      color: Color(0xFF{{ styles.backgroundColor[1:] }}),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular({{ styles.borderRadius | replace('px', '') | float | default(12) }}),
+      ),
+      child: ListTile(
+        leading: Icon(Icons.{{ component.leading or 'person' }}, color: Colors.black),
+        title: Text(
+          {{ component.title | tojson or '"Título"' }},
+          style: TextStyle(
+            fontSize: {{ styles.titleFontSize or 16 }},
+            color: Color(0xFF{{ styles.titleColor[1:] }}),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
+          {{ component.subtitle | tojson or '""' }},
+          style: TextStyle(
+            fontSize: {{ styles.contentFontSize or 14 }},
+            color: Color(0xFF{{ styles.contentColor[1:] }}),
+          ),
+        ),
+        trailing: Icon(Icons.{{ component.trailing or 'info' }}, color: Colors.black),
+        onTap: () {},
+      ),
+    ),
+  ),
+)

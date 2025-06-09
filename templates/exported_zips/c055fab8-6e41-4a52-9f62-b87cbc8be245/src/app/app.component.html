@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-gray-50 text-gray-800 p-6">
+  <h1 class="text-3xl font-bold mb-6 text-blue-700">Angular CRUD Generator</h1>
+
+  <h2 class="text-xl font-semibold mb-4">Entidades</h2>
+  <ul class="space-y-4">
+    
+    <li class="bg-white shadow rounded p-4 flex items-center justify-between">
+      <div class="font-medium">Empleado</div>
+      <div class="space-x-2">
+        <a routerLink="/empleados"
+           class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">📄 Ver</a>
+        <a routerLink="/empleado/new"
+           class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">➕ Nuevo</a>
+      </div>
+    </li>
+    
+    <li class="bg-white shadow rounded p-4 flex items-center justify-between">
+      <div class="font-medium">User</div>
+      <div class="space-x-2">
+        <a routerLink="/users"
+           class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">📄 Ver</a>
+        <a routerLink="/user/new"
+           class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">➕ Nuevo</a>
+      </div>
+    </li>
+    
+  </ul>
+
+  <div class="mt-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>
