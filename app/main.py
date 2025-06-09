@@ -12,7 +12,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
+#  Middleware para forzar https
+@app.middleware("http")
+async def fix_scheme_header(request, call_next):
+    if request.headers.get("x-forwarded-proto") == "https":
+        request.scope["scheme"] = "https"
+    return await call_next(request)
 
+# 🟦 CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -21,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+#  Rutas
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(user.router, prefix="/users", tags=["Users"])
 app.include_router(projects.router, prefix="/projects", tags=["Projects"])
@@ -30,6 +37,7 @@ app.include_router(collaboration_request.router, prefix="/collaboration-requests
 app.include_router(designs.router, prefix="/designs", tags=["Designs"])
 app.include_router(ws_sync.router)
 app.include_router(generation.router, tags=["Generation"])
+
 
 
 
