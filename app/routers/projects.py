@@ -68,6 +68,37 @@ def update_project_screen_size_endpoint(
 
     return updated_project
 
+@router.put("/{project_id}", response_model=ProjectOut)
+def update_project_name(
+    project_id: UUID,
+    update_data: ProjectCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    project = project_crud.get_project_by_id(db, project_id, current_user.id)
+    if not project:
+        raise HTTPException(status_code=403, detail="No tienes acceso a este proyecto")
+
+    project.name = update_data.name
+    db.commit()
+    db.refresh(project)
+    return project
+
+@router.delete("/{project_id}", status_code=204)
+def delete_project(
+    project_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    project = project_crud.get_project_by_id(db, project_id, current_user.id)
+    if not project:
+        raise HTTPException(status_code=403, detail="No tienes acceso a este proyecto")
+
+    db.delete(project)
+    db.commit()
+    return
+
+
 @router.get("/{project_id}/export-flutter", response_class=FileResponse)
 def export_flutter_project(
     project_id: UUID,

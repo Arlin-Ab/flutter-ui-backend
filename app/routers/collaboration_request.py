@@ -54,7 +54,10 @@ def get_my_requests(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    return request_crud.get_requests_by_user(db, str(current_user.id))
+    requests = request_crud.get_requests_by_user(db, str(current_user.id))
+    # Filtrar los que todavía tengan proyecto
+    filtered = [r for r in requests if r.project is not None]
+    return filtered
 
 @router.delete("/reject/{request_id}", response_model=CollaborationRequestOut)
 def reject_collaboration_request(
