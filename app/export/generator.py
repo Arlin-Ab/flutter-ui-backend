@@ -61,6 +61,11 @@ def render_screen(screen_name: str, screen_title: str, components: list[dict], s
 
 # Crea el proyecto Flutter y empaqueta todo en un ZIP
 def create_flutter_project(project_name: str, designs: list[dict], screen_width: int, screen_height: int) -> str:
+    def normalize_dart_identifier(name: str, fallback: str) -> str:
+        # Convierte "Pantalla Inicio" → "PantallaInicio"
+        base = "".join(c for c in name.title() if c.isalnum())
+        return base if base else fallback
+
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
         shutil.copytree(BASE_TEMPLATE_DIR, tmp_path / "flutter", dirs_exist_ok=True)
@@ -68,12 +73,23 @@ def create_flutter_project(project_name: str, designs: list[dict], screen_width:
         screens_path = tmp_path / "flutter" / "lib" / "screens"
         os.makedirs(screens_path, exist_ok=True)
 
+        used_class_names = set()
+
         for i, design in enumerate(designs):
-            screen_class_name = f"Screen{i+1}" if i > 0 else "HomeScreen"
-            screen_filename = screen_class_name[0].lower() + screen_class_name[1:] + ".dart"
+            # Normaliza el nombre de la clase desde el nombre del diseño
+            raw_name = design.get("name", "")
+            fallback_name = f"Screen{i+1}" if i > 0 else "HomeScreen"
+            screen_class_name = normalize_dart_identifier(raw_name, fallback_name)
+
+            # Evita duplicados
+            while screen_class_name in used_class_names:
+                screen_class_name += "X"
+            used_class_names.add(screen_class_name)
+
+            screen_filename = f"{screen_class_name[0].lower()}{screen_class_name[1:]}.dart"
             screen_code = render_screen(
                 screen_class_name,
-                design["name"],
+                design.get("name", screen_class_name),
                 design["data"].get("components", []),
                 screen_width,
                 screen_height

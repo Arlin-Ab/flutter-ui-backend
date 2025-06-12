@@ -23,7 +23,7 @@ class PromptRequest(BaseModel):
 VALID_TYPES = {
     "button", "input", "card", "label", "textarea", "select",
     "icon", "image", "checkbox", "switch", "divider", "radio",
-    "navbar", "row", "column", "grid"
+    "navbar", "row", "column", "grid", "fab", "appbar"
 }
     
 def assign_unique_ids(components: list[dict]) -> list[dict]:
@@ -49,7 +49,7 @@ async def generate_from_prompt(data: PromptRequest):
 Quiero que generes solo una lista de componentes visuales (sin estructura de pantallas) en formato JSON plano.
 
 Cada componente debe incluir:
-- type: uno de los valores permitidos: "button", "input", "card", "label", "textarea", "select", "icon", "image", "checkbox", "switch", "divider", "radio", "navbar", "row", "column", "grid"
+- type: uno de los valores permitidos: "button", "input", "card", "label", "textarea", "select", "icon", "image", "checkbox", "switch", "divider", "radio", "navbar", "row", "column", "grid","fab", "appbar"
 - label, placeholder, title o content: según el tipo
 - styles: contiene top, left, width, height (valores entre 0 y 1, proporcionales al canvas)
 
@@ -69,6 +69,28 @@ Ejemplo esperado:
   ]
 }}
 
+Notas sobre componentes especiales:
+
+- "fab": representa un botón flotante redondo, usualmente con un ícono como "add", "edit", "delete". Puede tener:
+  - icon: nombre del ícono (ej. "add")
+  - tooltip: texto visible al mantener el cursor
+  - actionType: "none", "navigate" o "openDialog"
+  - targetScreen: nombre de la pantalla de destino (si actionType es "navigate")
+  - dialogTitle, dialogContent, confirmText, cancelText (si actionType es "openDialog")
+
+- "appbar": representa una barra superior con:
+  - title: texto del encabezado
+  - height: altura entre 0.05 y 0.15
+  - actions: lista de objetos con
+    - icon
+    - tooltip
+    - action (igual que en fab)
+    - targetScreen, dialogTitle, dialogContent, confirmText, cancelText
+
+Restricciones:
+- Solo debe haber **una** `appbar` y **una** `navbar` por pantalla.
+
+
 Ahora genera componentes según esta descripción:
 {data.prompt}
 
@@ -86,7 +108,7 @@ Cada componente debe incluir:
 - type: uno de los valores permitidos:
   "button", "input", "card", "label", "textarea", "select",
   "icon", "image", "checkbox", "switch", "divider", "radio",
-  "navbar", "row", "column", "grid"
+  "navbar", "row", "column", "grid", "fab", "appbar"
 - label, placeholder, title o content: según el tipo
 - styles: contiene top, left, width, height (valores entre 0 y 1, proporcionales al canvas)
 
@@ -120,6 +142,28 @@ Ejemplo de formato esperado:
     }}
   ]
 }}
+
+Notas sobre componentes especiales:
+
+- "fab": representa un botón flotante redondo, usualmente con un ícono como "add", "edit", "delete". Puede tener:
+  - icon: nombre del ícono (ej. "add")
+  - tooltip: texto visible al mantener el cursor
+  - actionType: "none", "navigate" o "openDialog"
+  - targetScreen: nombre de la pantalla de destino (si actionType es "navigate")
+  - dialogTitle, dialogContent, confirmText, cancelText (si actionType es "openDialog")
+
+- "appbar": representa una barra superior con:
+  - title: texto del encabezado
+  - height: altura entre 0.05 y 0.15
+  - actions: lista de objetos con
+    - icon
+    - tooltip
+    - action (igual que en fab)
+    - targetScreen, dialogTitle, dialogContent, confirmText, cancelText
+
+Restricciones:
+- Solo debe haber **una** `appbar` y **una** `navbar` por pantalla.
+
 
 Ahora genera el diseño basado en esta descripción:
 {data.prompt}
@@ -184,7 +228,7 @@ El JSON debe tener el siguiente formato:
   "components": [
     {{
       "id": "string",
-      "type": "button" | "input" | "label" | "card" | "select" | "checkbox" | "switch" | "textarea" | "navbar" | "row" | "column" | "grid",
+      "type": "button" | "input" | "label" | "card" | "select" | "checkbox" | "switch" | "textarea" | "navbar" | "row" | "column" | "grid" | "fab" | "appbar",
       "label": "texto visible",
       "placeholder": "texto de ayuda (si aplica)",
       "title": "título (si aplica)",
@@ -198,6 +242,26 @@ El JSON debe tener el siguiente formato:
     }}
   ]
 }}
+
+Notas sobre componentes especiales:
+
+- "fab": representa un botón flotante redondo, usualmente con un ícono como "add", "edit", "delete". Puede tener:
+  - icon: nombre del ícono (ej. "add")
+  - tooltip: texto visible al mantener el cursor
+  - actionType: "none", "navigate" o "openDialog"
+  - targetScreen: nombre de la pantalla de destino (si actionType es "navigate")
+  - dialogTitle, dialogContent, confirmText, cancelText (si actionType es "openDialog")
+
+- "appbar": representa una barra superior con:
+  - title: texto del encabezado
+  - height: altura entre 0.05 y 0.15
+  - actions: lista de objetos con
+    - icon
+    - tooltip
+    - action (igual que en fab)
+    - targetScreen, dialogTitle, dialogContent, confirmText, cancelText
+Restricciones:
+- Solo debe haber **una** `appbar` y **una** `navbar` por pantalla.
 
 Describe y convierte solo los elementos visuales del boceto en componentes del tipo anterior.  
 Devuelve **solo el JSON plano sin explicaciones ni formato markdown**.

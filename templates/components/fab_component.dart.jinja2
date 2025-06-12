@@ -1,0 +1,32 @@
+Positioned(
+  top: screenHeight * {{ [component.styles.top | float, 0.85] | min }},
+  left: screenWidth * {{ component.styles.left }},
+  child: SizedBox(
+    width: screenWidth * {{ [component.styles.width, component.styles.height] | min }},
+    height: screenWidth * {{ [component.styles.width, component.styles.height] | min }},
+    child: FloatingActionButton(
+      backgroundColor: Color(0xFF{{ component.styles.backgroundColor[1:] }}),
+      foregroundColor: Color(0xFF{{ component.styles.color[1:] }}),
+      tooltip: {{ component.tooltip | tojson }},
+      shape: const CircleBorder(),
+      onPressed: () {
+        {% if component.actionType == "navigate" and component.targetScreen %}
+        Navigator.push(context, MaterialPageRoute(builder: (_) => {{ component.targetScreen.replace(" ", "") }}()));
+        {% elif component.actionType == "openDialog" %}
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text({{ component.dialogTitle | tojson }}),
+            content: Text({{ component.dialogContent | tojson }}),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(context), child: Text({{ component.cancelText | tojson }})),
+              TextButton(onPressed: () => Navigator.pop(context), child: Text({{ component.confirmText | tojson }})),
+            ],
+          ),
+        );
+        {% endif %}
+      },
+      child: Icon(Icons.{{ component.icon | default("add") }}),
+    ),
+  ),
+)

@@ -25,16 +25,16 @@ class _{{ screen_name }}State extends State<{{ screen_name }}> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      {% set has_appbar = components | selectattr("component.type", "equalto", "appbar") | list | length > 0 %}
-      {% if has_appbar %}
-      appBar: AppBar(
-        title: const Text('{{ screen_title }}'),
-      ),
-      {% endif %}
       body: SafeArea(
         child: Stack(
           children: [
+            // Renderiza todos los elementos excepto navbars y appbars
             {% for c in components if c.component.type not in ['navbar', 'appbar'] %}
+              {{ c.rendered }},
+            {% endfor %}
+
+            // Siempre renderiza el AppBar como Positioned dentro del Stack
+            {% for c in components if c.component.type == 'appbar' %}
               {{ c.rendered }},
             {% endfor %}
           ],

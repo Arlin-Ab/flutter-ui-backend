@@ -1,0 +1,52 @@
+Positioned(
+  top: screenHeight * {{ component.styles.top }},
+  left: screenWidth * {{ component.styles.left }},
+  child: SizedBox(
+    width: screenWidth * {{ component.styles.width }},
+    height: screenHeight * {{ component.styles.height }},
+    child: AppBar(
+      backgroundColor: Color(0xFF{{ component.styles.backgroundColor[1:] }}),
+      foregroundColor: Color(0xFF{{ component.styles.color[1:] }}),
+      title: Text(
+        {{ component.title | default("Título") | tojson }},
+        style: TextStyle(
+          fontSize: {{ component.styles.titleFontSize or 16 }},
+          color: Color(0xFF{{ component.styles.color[1:] }}),
+        ),
+      ),
+      actions: [
+        {% for action in component.actions or [] %}
+        IconButton(
+          icon: Icon(Icons.{{ action.icon or "more_vert" }}),
+          tooltip: {{ action.tooltip | tojson }},
+          onPressed: () {
+            {% if action.action == "navigate" and action.targetScreen %}
+            Navigator.push(context, MaterialPageRoute(
+              builder: (_) => {{ action.targetScreen.replace(" ", "") }}(),
+            ));
+            {% elif action.action == "openDialog" %}
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text({{ action.dialogTitle | tojson }}),
+                content: Text({{ action.dialogContent | tojson }}),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text({{ action.cancelText | tojson }}),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text({{ action.confirmText | tojson }}),
+                  ),
+                ],
+              ),
+            );
+            {% endif %}
+          },
+        ),
+        {% endfor %}
+      ],
+    ),
+  ),
+)
