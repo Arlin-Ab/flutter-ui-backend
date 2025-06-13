@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/homeScreen.dart'; // o el nombre generado dinámicamente
+import 'package:generador_flutter/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Proyecto Exportado',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomeScreen(), // Carga solo una pantalla
+      home: const Home(), // Carga solo una pantalla
     );
   }
 }

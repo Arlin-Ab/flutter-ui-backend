@@ -5,6 +5,7 @@ import os
 import base64
 import json
 import uuid
+import tempfile
 from typing import Optional
 from dotenv import load_dotenv
 
@@ -295,4 +296,38 @@ Descripción extra (si existe):
         return {"design": parsed}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/generate/from_audio")
+async def generate_from_audio(
+    file: UploadFile = File(...),
+    mode: str = Form("new")
+):
+    try:
+        # Leer bytes del archivo subido
+        audio_bytes = await file.read()
+
+        # Guardar en archivo temporal .mp3
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
+            temp.write(audio_bytes)
+            temp_path = temp.name
+
+        # Usar archivo real en la API de OpenAI
+        with open(temp_path, "rb") as audio_file:
+            transcript_response = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+                response_format="text"
+            )
+
+        transcribed_text = transcript_response.strip()
+        prompt_data = PromptRequest(prompt=transcribed_text, mode=mode)
+        return await generate_from_prompt(prompt_data)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error procesando audio: {str(e)}")
+    finally:
+        # Limpieza del archivo temporal
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
